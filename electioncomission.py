@@ -54,5 +54,8 @@ print data.gender.value_counts()
 #plt.show()
 
 
-data.plot(kind='density', subplots=True, layout=(3,3), sharex=False)
+#data.plot(kind='density', subplots=True, layout=(3,3), sharex=False)
+#plt.show()
+
+data.plot(kind='box', subplots=True, layout=(3,3), sharex=False, sharey=False)
 plt.show()
