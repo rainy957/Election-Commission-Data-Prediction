@@ -6,6 +6,7 @@ import numpy as np
 from sklearn.preprocessing import LabelEncoder
 from sklearn.cross_validation import KFold 
 import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
 
 def notNan(num):
     return num == num
@@ -69,6 +70,8 @@ print data.gender.value_counts()
 
 #data.plot(kind='box', subplots=True, layout=(3,3), sharex=False, sharey=False)
 #plt.show()
+
+train,test = train_test_split(data,test_size=0.3)
 
 
 
