@@ -53,3 +53,7 @@ male = data[data["gender"]==0]
 female = data[data["gender"]==1]
 
 
+plt.scatter(data["age"],data["gender"])
+plt.show()
+
+
