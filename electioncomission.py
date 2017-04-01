@@ -7,6 +7,8 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.cross_validation import KFold 
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn import metrics
 
 def notNan(num):
     return num == num
@@ -72,6 +74,11 @@ print data.gender.value_counts()
 #plt.show()
 
 train,test = train_test_split(data,test_size=0.3)
+
+predictor_var = ['age']
+outcome_var = ['gender']
+model = LogisticRegression()
+classification_model(model,train,predictor_var,outcome_var)
 
 
 
