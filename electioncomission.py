@@ -46,14 +46,13 @@ data["gender"] = LabelEncoder().fit_transform(data["gender"].astype(str))
 print data.gender.value_counts()
 
 
-plt.hist(data["gender"])
+#plt.hist(data["gender"])
+#plt.show()
+
+
+#plt.scatter(data["age"],data["gender"])
+#plt.show()
+
+
+data.plot(kind='density', subplots=True, layout=(3,3), sharex=False)
 plt.show()
-
-male = data[data["gender"]==0]
-female = data[data["gender"]==1]
-
-
-plt.scatter(data["age"],data["gender"])
-plt.show()
-
-
