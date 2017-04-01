@@ -5,6 +5,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
+import matplotlib.pyplot as plt
 
 def notNan(num):
     return num == num
@@ -43,3 +44,12 @@ data = data[notNan(data.votes)]
 print data.gender.value_counts()
 data["gender"] = LabelEncoder().fit_transform(data["gender"].astype(str))
 print data.gender.value_counts()
+
+
+plt.hist(data["gender"])
+plt.show()
+
+male = data[data["gender"]==0]
+female = data[data["gender"]==1]
+
+
