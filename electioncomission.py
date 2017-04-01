@@ -5,6 +5,9 @@
 import pandas as pd
 import numpy as np
 
+def notNan(num):
+    return num == num
+
 data = pd.read_csv("elec50.csv")
 print data.head(10)
 print data.describe()
@@ -30,3 +33,6 @@ data = data.drop(["Unnamed: 30"],axis=1)
 data = data.drop(["Unnamed: 31"],axis=1)
 data = data.drop(["Unnamed: 32"],axis=1)
 data = data.drop(["Unnamed: 33"],axis=1)
+
+
+data = data[notNan(data.votes)]
