@@ -4,6 +4,7 @@
 
 import pandas as pd
 import numpy as np
+from sklearn.preprocessing import LabelEncoder
 
 def notNan(num):
     return num == num
@@ -11,6 +12,7 @@ def notNan(num):
 data = pd.read_csv("elec50.csv")
 print data.head(10)
 print data.describe()
+print len(data)
 
 data = data.drop(["Unnamed: 13"],axis=1)
 data = data.drop(["Unnamed: 14"],axis=1)
@@ -36,3 +38,8 @@ data = data.drop(["Unnamed: 33"],axis=1)
 
 
 data = data[notNan(data.votes)]
+
+
+print data.gender.value_counts()
+data["gender"] = LabelEncoder().fit_transform(data["gender"].astype(str))
+print data.gender.value_counts()
