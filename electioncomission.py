@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn import metrics
+from sklearn.tree import DecisionTreeClassifier, export_graphviz
 
 def notNan(num):
     return num == num
@@ -73,11 +74,13 @@ print data.gender.value_counts()
 #data.plot(kind='box', subplots=True, layout=(3,3), sharex=False, sharey=False)
 #plt.show()
 
+data["candi_des"] = LabelEncoder().fit_transform(data["candi_des"].astype(str))
+
 train,test = train_test_split(data,test_size=0.3)
 
 predictor_var = ['age']
 outcome_var = ['gender']
-model = LogisticRegression()
+model = DecisionTreeClassifier()
 classification_model(model,train,predictor_var,outcome_var)
 
 
