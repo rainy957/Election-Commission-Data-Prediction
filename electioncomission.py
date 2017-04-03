@@ -19,7 +19,7 @@ def classification_model(model, data, predictors, outcome):
     model.fit(data[predictors],data[outcome])
     predictions = model.predict(data[predictors])
     accuracy = metrics.accuracy_score(predictions,data[outcome])
-    print("Accuracy : %s" % "{0:.3%}".format(accuracy))
+    print("Accuracy of "+outcome[0]+" : %s" % "{0:.3%}".format(accuracy))
     kf = KFold(data.shape[0], n_folds=5)
     error = []
     for train, test in kf:
@@ -54,7 +54,7 @@ data = data.drop(["Unnamed: 31"],axis=1)
 data = data.drop(["Unnamed: 32"],axis=1)
 data = data.drop(["Unnamed: 33"],axis=1)
 data = data.drop(["Party_cd"],axis=1)
-data = data.drop(["candi_des"],axis=1)
+#data = data.drop(["candi_des"],axis=1)
 data = data.drop(["nomi_status"],axis=1)
 data = data.drop(["FiNIL_lock"],axis=1)
 
@@ -81,7 +81,7 @@ print data.gender.value_counts()
 
 print data.head(49)
 
-#data["candi_des"] = LabelEncoder().fit_transform(data["candi_des"].astype(str))
+data["candi_des"] = LabelEncoder().fit_transform(data["candi_des"].astype(str))
 data["cat"] = LabelEncoder().fit_transform(data["cat"].astype(str))
 data["OccuPation"] = LabelEncoder().fit_transform(data["OccuPation"].astype(str))
 data["Education"] = LabelEncoder().fit_transform(data["Education"].astype(str))
@@ -93,9 +93,10 @@ print data.head(49)
 
 train,test = train_test_split(data,test_size=0.3)
 
-predictor_var = ['age','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
+predictor_var = ['age','candi_des','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
 outcome_var = ['gender']
 model = DecisionTreeClassifier()
 classification_model(model,train,predictor_var,outcome_var)
+
 
 
