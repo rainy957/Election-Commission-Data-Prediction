@@ -28,7 +28,8 @@ def classification_model(model, data, predictors, outcome):
         model.fit(train_predictors, train_target)
         error.append(model.score(data[predictors].iloc[test,:], data[outcome].iloc[test]))
         print("Cross-Validation Score : %s" % "{0:.3%}".format(np.mean(error)))
-    model.fit(data[predictors],data[outcome]) 
+    model.fit(data[predictors],data[outcome])
+    print
 
 data = pd.read_csv("elec50.csv")
 
@@ -98,5 +99,44 @@ outcome_var = ['gender']
 model = DecisionTreeClassifier()
 classification_model(model,train,predictor_var,outcome_var)
 
+predictor_var = ['gender','candi_des','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
+outcome_var = ['age']
+model = DecisionTreeClassifier()
+classification_model(model,train,predictor_var,outcome_var)
 
+predictor_var = ['age','gender','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
+outcome_var = ['candi_des']
+model = DecisionTreeClassifier()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['age','candi_des','gender','cat','votes','Education','OccuPation','P.G..rr_Status']
+outcome_var = ['Ward_no']
+model = DecisionTreeClassifier()
+classification_model(model,train,predictor_var,outcome_var)
+
+
+predictor_var = ['age','candi_des','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
+outcome_var = ['cat']
+model = DecisionTreeClassifier()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['gender','candi_des','Ward_no','cat','age','Education','OccuPation','P.G..rr_Status']
+outcome_var = ['votes']
+model = DecisionTreeClassifier()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['age','gender','Ward_no','cat','votes','candi_des','OccuPation','P.G..rr_Status']
+outcome_var = ['Education']
+model = DecisionTreeClassifier()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['age','candi_des','gender','cat','votes','Education','Ward_no','P.G..rr_Status']
+outcome_var = ['OccuPation']
+model = DecisionTreeClassifier()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['age','candi_des','gender','cat','votes','Education','Ward_no','OccuPation']
+outcome_var = ['P.G..rr_Status']
+model = DecisionTreeClassifier()
+classification_model(model,train,predictor_var,outcome_var)
 
