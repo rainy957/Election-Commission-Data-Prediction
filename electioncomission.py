@@ -11,6 +11,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn import metrics
 from sklearn.tree import DecisionTreeClassifier, export_graphviz
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.naive_bayes import GaussianNB
 
 def notNan(num):
     return num == num
@@ -93,6 +94,147 @@ print data.head(49)
 #print len(data)
 
 train,test = train_test_split(data,test_size=0.3)
+
+
+predictor_var = ['age','candi_des','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
+outcome_var = ['gender']
+model = LogisticRegression()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['gender','candi_des','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
+outcome_var = ['age']
+model = LogisticRegression()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['age','gender','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
+outcome_var = ['candi_des']
+model = LogisticRegression()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['age','candi_des','gender','cat','votes','Education','OccuPation','P.G..rr_Status']
+outcome_var = ['Ward_no']
+model = LogisticRegression()
+classification_model(model,train,predictor_var,outcome_var)
+
+
+predictor_var = ['age','candi_des','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
+outcome_var = ['cat']
+model = LogisticRegression()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['gender','candi_des','Ward_no','cat','age','Education','OccuPation','P.G..rr_Status']
+outcome_var = ['votes']
+model = LogisticRegression()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['age','gender','Ward_no','cat','votes','candi_des','OccuPation','P.G..rr_Status']
+outcome_var = ['Education']
+model = LogisticRegression()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['age','candi_des','gender','cat','votes','Education','Ward_no','P.G..rr_Status']
+outcome_var = ['OccuPation']
+model = LogisticRegression()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['age','candi_des','gender','cat','votes','Education','Ward_no','OccuPation']
+outcome_var = ['P.G..rr_Status']
+model = LogisticRegression()
+classification_model(model,train,predictor_var,outcome_var)
+
+
+predictor_var = ['age','candi_des','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
+outcome_var = ['gender']
+model = GaussianNB()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['gender','candi_des','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
+outcome_var = ['age']
+model = GaussianNB()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['age','gender','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
+outcome_var = ['candi_des']
+model = GaussianNB()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['age','candi_des','gender','cat','votes','Education','OccuPation','P.G..rr_Status']
+outcome_var = ['Ward_no']
+model = GaussianNB()
+classification_model(model,train,predictor_var,outcome_var)
+
+
+predictor_var = ['age','candi_des','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
+outcome_var = ['cat']
+model = GaussianNB()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['gender','candi_des','Ward_no','cat','age','Education','OccuPation','P.G..rr_Status']
+outcome_var = ['votes']
+model = GaussianNB()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['age','gender','Ward_no','cat','votes','candi_des','OccuPation','P.G..rr_Status']
+outcome_var = ['Education']
+model = GaussianNB()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['age','candi_des','gender','cat','votes','Education','Ward_no','P.G..rr_Status']
+outcome_var = ['OccuPation']
+model = GaussianNB()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['age','candi_des','gender','cat','votes','Education','Ward_no','OccuPation']
+outcome_var = ['P.G..rr_Status']
+model = GaussianNB()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['age','candi_des','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
+outcome_var = ['gender']
+model = RandomForestClassifier()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['gender','candi_des','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
+outcome_var = ['age']
+model = RandomForestClassifier()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['age','gender','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
+outcome_var = ['candi_des']
+model = RandomForestClassifier()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['age','candi_des','gender','cat','votes','Education','OccuPation','P.G..rr_Status']
+outcome_var = ['Ward_no']
+model = RandomForestClassifier()
+classification_model(model,train,predictor_var,outcome_var)
+
+
+predictor_var = ['age','candi_des','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
+outcome_var = ['cat']
+model = RandomForestClassifier()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['gender','candi_des','Ward_no','cat','age','Education','OccuPation','P.G..rr_Status']
+outcome_var = ['votes']
+model = RandomForestClassifier()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['age','gender','Ward_no','cat','votes','candi_des','OccuPation','P.G..rr_Status']
+outcome_var = ['Education']
+model = RandomForestClassifier()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['age','candi_des','gender','cat','votes','Education','Ward_no','P.G..rr_Status']
+outcome_var = ['OccuPation']
+model = RandomForestClassifier()
+classification_model(model,train,predictor_var,outcome_var)
+
+predictor_var = ['age','candi_des','gender','cat','votes','Education','Ward_no','OccuPation']
+outcome_var = ['P.G..rr_Status']
+model = RandomForestClassifier()
+classification_model(model,train,predictor_var,outcome_var)
+
 
 predictor_var = ['age','candi_des','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
 outcome_var = ['gender']
