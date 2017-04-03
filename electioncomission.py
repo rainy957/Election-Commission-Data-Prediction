@@ -10,6 +10,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn import metrics
 from sklearn.tree import DecisionTreeClassifier, export_graphviz
+from sklearn.ensemble import RandomForestClassifier
 
 def notNan(num):
     return num == num
@@ -30,6 +31,7 @@ def classification_model(model, data, predictors, outcome):
     model.fit(data[predictors],data[outcome]) 
 
 data = pd.read_csv("elec50.csv")
+
 print data.head(10)
 print data.describe()
 print len(data)
@@ -57,6 +59,7 @@ data = data.drop(["Unnamed: 32"],axis=1)
 data = data.drop(["Unnamed: 33"],axis=1)
 
 data = data[notNan(data.votes)]
+data = data[notNan(data.Ward_no)]
 
 print data.gender.value_counts()
 data["gender"] = LabelEncoder().fit_transform(data["gender"].astype(str))
@@ -75,10 +78,10 @@ print data.gender.value_counts()
 #plt.show()
 
 data["candi_des"] = LabelEncoder().fit_transform(data["candi_des"].astype(str))
-
+data["cat"] = LabelEncoder().fit_transform(data["cat"].astype(str))
 train,test = train_test_split(data,test_size=0.3)
 
-predictor_var = ['age']
+predictor_var = ['age','Ward_no']
 outcome_var = ['gender']
 model = DecisionTreeClassifier()
 classification_model(model,train,predictor_var,outcome_var)
