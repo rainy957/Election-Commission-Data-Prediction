@@ -36,6 +36,10 @@ print data.head(10)
 print data.describe()
 print len(data)
 
+#charan 8332083036
+#vamshi 9705530295
+#sriraj 9705062048
+
 data = data.drop(["Unnamed: 13"],axis=1)
 data = data.drop(["Unnamed: 14"],axis=1)
 data = data.drop(["Unnamed: 15"],axis=1)
