@@ -1,36 +1,26 @@
-#minor project prediction of candidate win
-#dataset :2014-2016 election commission dataset
-
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import LabelEncoder
-from sklearn.cross_validation import KFold 
+from pandas.tools.plotting import scatter_matrix
 import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from sklearn import model_selection
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score
 from sklearn.linear_model import LogisticRegression
-from sklearn import metrics
-from sklearn.tree import DecisionTreeClassifier, export_graphviz
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.naive_bayes import GaussianNB
+from sklearn.svm import SVC
 
 def notNan(num):
     return num == num
 
-def classification_model(model, data, predictors, outcome):
-    model.fit(data[predictors],data[outcome])
-    predictions = model.predict(data[predictors])
-    accuracy = metrics.accuracy_score(predictions,data[outcome])
-    print("Accuracy of "+outcome[0]+" : %s" % "{0:.3%}".format(accuracy))
-    kf = KFold(data.shape[0], n_folds=5)
-    error = []
-    for train, test in kf:
-        train_predictors = (data[predictors].iloc[train,:])
-        train_target = data[outcome].iloc[train]
-        model.fit(train_predictors, train_target)
-        error.append(model.score(data[predictors].iloc[test,:], data[outcome].iloc[test]))
-        print("Cross-Validation Score : %s" % "{0:.3%}".format(np.mean(error)))
-    model.fit(data[predictors],data[outcome])
-    print
+def notInRange(num):
+    return num <= 100
+
+
 
 data = pd.read_csv("elec50.csv")
 
@@ -56,229 +46,82 @@ data = data.drop(["Unnamed: 31"],axis=1)
 data = data.drop(["Unnamed: 32"],axis=1)
 data = data.drop(["Unnamed: 33"],axis=1)
 data = data.drop(["Party_cd"],axis=1)
-#data = data.drop(["candi_des"],axis=1)
+data = data.drop(["candi_des"],axis=1)
 data = data.drop(["nomi_status"],axis=1)
 data = data.drop(["FiNIL_lock"],axis=1)
+data = data.drop(["cand_NILme"],axis=1)
+data = data.drop(["P.G..rr_Status"],axis=1)
 
 data = data[notNan(data.votes)]
 data = data[notNan(data.Ward_no)]
+data = data[notInRange(data.age)]
 
 
 
-print data.gender.value_counts()
-data["gender"] = LabelEncoder().fit_transform(data["gender"].astype(str))
-print data.gender.value_counts()
+"""data.plot(kind='box', subplots=True, layout=(2,2), sharex=False, sharey=False)
+plt.show()
 
-#plt.hist(data["gender"])
-#plt.show()
+data.hist()
+plt.show()
 
-#plt.scatter(data["age"],data["gender"])
-#plt.show()
+scatter_matrix(data)
+plt.show()"""
 
-#data.plot(kind='density', subplots=True, layout=(3,3), sharex=False)
-#plt.show()
 
-#data.plot(kind='box', subplots=True, layout=(3,3), sharex=False, sharey=False)
-#plt.show()
-
-print data.head(49)
-
-data["candi_des"] = LabelEncoder().fit_transform(data["candi_des"].astype(str))
 data["cat"] = LabelEncoder().fit_transform(data["cat"].astype(str))
+data["gender"] = LabelEncoder().fit_transform(data["gender"].astype(str))
 data["OccuPation"] = LabelEncoder().fit_transform(data["OccuPation"].astype(str))
 data["Education"] = LabelEncoder().fit_transform(data["Education"].astype(str))
-data["P.G..rr_Status"] = LabelEncoder().fit_transform(data["P.G..rr_Status"].astype(str))
+#data["P.G..rr_Status"] = LabelEncoder().fit_transform(data["P.G..rr_Status"].astype(str))
 
-print data.head(49)
-#print data.describe()
-#print len(data)
+print(data.shape)
+print(data.head(20))
+print(data.describe())
 
-train,test = train_test_split(data,test_size=0.3)
-
-
-predictor_var = ['age','candi_des','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
-outcome_var = ['gender']
-model = LogisticRegression()
-classification_model(model,train,predictor_var,outcome_var)
-
-predictor_var = ['gender','candi_des','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
-outcome_var = ['age']
-model = LogisticRegression()
-classification_model(model,train,predictor_var,outcome_var)
-
-predictor_var = ['age','gender','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
-outcome_var = ['candi_des']
-model = LogisticRegression()
-classification_model(model,train,predictor_var,outcome_var)
-
-predictor_var = ['age','candi_des','gender','cat','votes','Education','OccuPation','P.G..rr_Status']
-outcome_var = ['Ward_no']
-model = LogisticRegression()
-classification_model(model,train,predictor_var,outcome_var)
+print(data.groupby('age').size())
+print(data.groupby('gender').size())
 
 
-predictor_var = ['age','candi_des','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
-outcome_var = ['cat']
-model = LogisticRegression()
-classification_model(model,train,predictor_var,outcome_var)
 
-predictor_var = ['gender','candi_des','Ward_no','cat','age','Education','OccuPation','P.G..rr_Status']
-outcome_var = ['votes']
-model = LogisticRegression()
-classification_model(model,train,predictor_var,outcome_var)
-
-predictor_var = ['age','gender','Ward_no','cat','votes','candi_des','OccuPation','P.G..rr_Status']
-outcome_var = ['Education']
-model = LogisticRegression()
-classification_model(model,train,predictor_var,outcome_var)
-
-predictor_var = ['age','candi_des','gender','cat','votes','Education','Ward_no','P.G..rr_Status']
-outcome_var = ['OccuPation']
-model = LogisticRegression()
-classification_model(model,train,predictor_var,outcome_var)
-
-predictor_var = ['age','candi_des','gender','cat','votes','Education','Ward_no','OccuPation']
-outcome_var = ['P.G..rr_Status']
-model = LogisticRegression()
-classification_model(model,train,predictor_var,outcome_var)
+array = data.values
+X = array[:,1:]
+Y = array[:,0]
+validation_size = 0.40
+seed = 7
+scoring = 'accuracy'
+X_train, X_validation, Y_train, Y_validation = model_selection.train_test_split(X, Y, test_size=validation_size, random_state=seed)
 
 
-predictor_var = ['age','candi_des','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
-outcome_var = ['gender']
-model = GaussianNB()
-classification_model(model,train,predictor_var,outcome_var)
 
-predictor_var = ['gender','candi_des','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
-outcome_var = ['age']
-model = GaussianNB()
-classification_model(model,train,predictor_var,outcome_var)
+models = []
+models.append(('LDA', LinearDiscriminantAnalysis()))
+models.append(('KNN', KNeighborsClassifier()))
+models.append(('DTC', DecisionTreeClassifier()))
+models.append(('NB', GaussianNB()))
+models.append(('SVM', SVC()))
 
-predictor_var = ['age','gender','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
-outcome_var = ['candi_des']
-model = GaussianNB()
-classification_model(model,train,predictor_var,outcome_var)
+results = []
+names = []
+for name, model in models:
+    cv_results = model_selection.cross_val_score(model, X_train, Y_train, cv=5, scoring=scoring)
+    results.append(cv_results)
+    names.append(name)
+    msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
+    print(msg)
+	
+modelsName = ['LDA','KNN','DTC','NB','SVM']
 
-predictor_var = ['age','candi_des','gender','cat','votes','Education','OccuPation','P.G..rr_Status']
-outcome_var = ['Ward_no']
-model = GaussianNB()
-classification_model(model,train,predictor_var,outcome_var)
-
-
-predictor_var = ['age','candi_des','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
-outcome_var = ['cat']
-model = GaussianNB()
-classification_model(model,train,predictor_var,outcome_var)
-
-predictor_var = ['gender','candi_des','Ward_no','cat','age','Education','OccuPation','P.G..rr_Status']
-outcome_var = ['votes']
-model = GaussianNB()
-classification_model(model,train,predictor_var,outcome_var)
-
-predictor_var = ['age','gender','Ward_no','cat','votes','candi_des','OccuPation','P.G..rr_Status']
-outcome_var = ['Education']
-model = GaussianNB()
-classification_model(model,train,predictor_var,outcome_var)
-
-predictor_var = ['age','candi_des','gender','cat','votes','Education','Ward_no','P.G..rr_Status']
-outcome_var = ['OccuPation']
-model = GaussianNB()
-classification_model(model,train,predictor_var,outcome_var)
-
-predictor_var = ['age','candi_des','gender','cat','votes','Education','Ward_no','OccuPation']
-outcome_var = ['P.G..rr_Status']
-model = GaussianNB()
-classification_model(model,train,predictor_var,outcome_var)
-
-predictor_var = ['age','candi_des','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
-outcome_var = ['gender']
-model = RandomForestClassifier()
-classification_model(model,train,predictor_var,outcome_var)
-
-predictor_var = ['gender','candi_des','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
-outcome_var = ['age']
-model = RandomForestClassifier()
-classification_model(model,train,predictor_var,outcome_var)
-
-predictor_var = ['age','gender','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
-outcome_var = ['candi_des']
-model = RandomForestClassifier()
-classification_model(model,train,predictor_var,outcome_var)
-
-predictor_var = ['age','candi_des','gender','cat','votes','Education','OccuPation','P.G..rr_Status']
-outcome_var = ['Ward_no']
-model = RandomForestClassifier()
-classification_model(model,train,predictor_var,outcome_var)
+fig = plt.figure()
+fig.suptitle('Algorithm Comparison')
+ax = fig.add_subplot(111)
+plt.boxplot(results)
+ax.set_xticklabels(modelsName)
+plt.show()
 
 
-predictor_var = ['age','candi_des','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
-outcome_var = ['cat']
-model = RandomForestClassifier()
-classification_model(model,train,predictor_var,outcome_var)
-
-predictor_var = ['gender','candi_des','Ward_no','cat','age','Education','OccuPation','P.G..rr_Status']
-outcome_var = ['votes']
-model = RandomForestClassifier()
-classification_model(model,train,predictor_var,outcome_var)
-
-predictor_var = ['age','gender','Ward_no','cat','votes','candi_des','OccuPation','P.G..rr_Status']
-outcome_var = ['Education']
-model = RandomForestClassifier()
-classification_model(model,train,predictor_var,outcome_var)
-
-predictor_var = ['age','candi_des','gender','cat','votes','Education','Ward_no','P.G..rr_Status']
-outcome_var = ['OccuPation']
-model = RandomForestClassifier()
-classification_model(model,train,predictor_var,outcome_var)
-
-predictor_var = ['age','candi_des','gender','cat','votes','Education','Ward_no','OccuPation']
-outcome_var = ['P.G..rr_Status']
-model = RandomForestClassifier()
-classification_model(model,train,predictor_var,outcome_var)
-
-
-predictor_var = ['age','candi_des','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
-outcome_var = ['gender']
-model = DecisionTreeClassifier()
-classification_model(model,train,predictor_var,outcome_var)
-
-predictor_var = ['gender','candi_des','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
-outcome_var = ['age']
-model = DecisionTreeClassifier()
-classification_model(model,train,predictor_var,outcome_var)
-
-predictor_var = ['age','gender','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
-outcome_var = ['candi_des']
-model = DecisionTreeClassifier()
-classification_model(model,train,predictor_var,outcome_var)
-
-predictor_var = ['age','candi_des','gender','cat','votes','Education','OccuPation','P.G..rr_Status']
-outcome_var = ['Ward_no']
-model = DecisionTreeClassifier()
-classification_model(model,train,predictor_var,outcome_var)
-
-
-predictor_var = ['age','candi_des','Ward_no','cat','votes','Education','OccuPation','P.G..rr_Status']
-outcome_var = ['cat']
-model = DecisionTreeClassifier()
-classification_model(model,train,predictor_var,outcome_var)
-
-predictor_var = ['gender','candi_des','Ward_no','cat','age','Education','OccuPation','P.G..rr_Status']
-outcome_var = ['votes']
-model = DecisionTreeClassifier()
-classification_model(model,train,predictor_var,outcome_var)
-
-predictor_var = ['age','gender','Ward_no','cat','votes','candi_des','OccuPation','P.G..rr_Status']
-outcome_var = ['Education']
-model = DecisionTreeClassifier()
-classification_model(model,train,predictor_var,outcome_var)
-
-predictor_var = ['age','candi_des','gender','cat','votes','Education','Ward_no','P.G..rr_Status']
-outcome_var = ['OccuPation']
-model = DecisionTreeClassifier()
-classification_model(model,train,predictor_var,outcome_var)
-
-predictor_var = ['age','candi_des','gender','cat','votes','Education','Ward_no','OccuPation']
-outcome_var = ['P.G..rr_Status']
-model = DecisionTreeClassifier()
-classification_model(model,train,predictor_var,outcome_var)
-
+svm = SVC()
+svm.fit(X_train, Y_train)
+predictions = svm.predict(X_validation)
+print(accuracy_score(Y_validation, predictions))
+print(confusion_matrix(Y_validation, predictions))
+print(classification_report(Y_validation, predictions))
